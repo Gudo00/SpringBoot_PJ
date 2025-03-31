@@ -1,4 +1,4 @@
-package com.example.sboot;
+package org.gudo.sboot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
