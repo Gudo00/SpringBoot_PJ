@@ -1,12 +1,11 @@
 package org.gudo.sboot.board.dto;
 
+import lombok.ToString;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-
-
-import lombok.ToString;
 
 @ToString
 public class PageRequestDTO {

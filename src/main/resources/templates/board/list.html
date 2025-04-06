@@ -3,66 +3,75 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/baseLayout.html}">
 
+<head>
+    <title>게시판</title>
+</head>
+
+<body>
 <div layout:fragment="content">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">카드 제목</h5>
-            <p class="card-text">이것은 부트스트랩 카드를 사용하는 예제입니다.</p>
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-white">📋 게시판</h2>
+        <a href="/board/register" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition">
+            글 작성
+        </a>
+    </div>
 
-            <!-- 게시글 등록 버튼 추가 -->
-            <div class="mb-3 text-end">
-                <a href="/board/register" class="btn btn-primary">글 등록</a>
-            </div>
+    <div class="overflow-x-auto rounded-lg shadow">
+        <table class="min-w-full text-sm text-left text-gray-300">
+            <thead class="bg-gray-800 text-xs uppercase font-semibold text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">#</th>
+                <th scope="col" class="px-6 py-3">제목</th>
+                <th scope="col" class="px-6 py-3">작성자</th>
+                <th scope="col" class="px-6 py-3">등록일</th>
+                <th scope="col" class="px-6 py-3">조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${data.dtoList}" class="hover:bg-gray-800 transition">
+                <td class="px-6 py-4">[[ ${board.bno} ]]</td>
+                <td class="px-6 py-4">
+                    <a th:href="'/board/read/' + ${board.bno} + ${requestDTO.pageLink}" class="text-indigo-400 hover:underline">
+                        [[ ${board.title} ]]
+                    </a>
+                    <span class="ml-2 text-sm text-gray-500">[ [[ ${board.replyCnt} ]] ]</span>
+                </td>
+                <td class="px-6 py-4">[[${board.writer}]]</td>
+                <td class="px-6 py-4">2024-04-02</td>
+                <td class="px-6 py-4">120</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-            <table class="table table-hover">
-                <thead class="table-light">
-                <tr>
-                    <th>#</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>등록일</th>
-                    <th>조회수</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="board : ${data.dtoList}">
-                    <td>[[ ${board.bno} ]]</td>
-                    <td>
-                        <a th:href="'/board/read/' + ${board.bno} + ${requestDTO.pageLink}">
-                            [[ ${board.title} ]]
-                        </a>
-                        <b> [ [[ ${board.replyCnt} ]] ] </b> </td>
-                    <td>홍길동</td>
-                    <td>2024-04-02</td>
-                    <td>120</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div>
-                <ul class="pagination">
-                    <li class="page-item" th:if="${data.prev}" th:with="linkUrl=@{/board/list(page=${data.start -1}, size=${requestDTO.size})}" >
-                        <a class="page-link" th:href="${linkUrl + requestDTO.link}" >
-                            Previous
-                        </a>
-                    </li>
-
-                    <th:block th:each="num : ${#numbers.sequence(data.start,data.end)}">
-                        <li th:class="${num == data.page? 'page-item active':'page-item'}"
-                            th:with="linkUrl=@{/board/list(page=${num}, size=${requestDTO.size})}"
-                        >
-                            <a class="page-link" th:href="${linkUrl + requestDTO.link}" >[[${num} ]]</a></li>
-                    </th:block>
-
-                    <li class="page-item" th:if="${data.next}" th:with="linkUrl=@{/board/list(page=${data.end + 1}, size=${requestDTO.size})}" >
-                        <a class="page-link" th:href="${linkUrl + requestDTO.link}" >Next</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <!-- Pagination -->
+    <div class="mt-6 flex justify-center">
+        <ul class="inline-flex -space-x-px text-sm">
+            <li th:if="${data.prev}" th:with="linkUrl=@{/board/list(page=${data.start -1}, size=${requestDTO.size})}">
+                <a class="px-3 py-2 ml-0 leading-tight text-gray-400 bg-gray-800 border border-gray-700 rounded-l-lg hover:bg-gray-700 hover:text-white"
+                   th:href="${linkUrl + requestDTO.link}">
+                    Previous
+                </a>
+            </li>
+            <th:block th:each="num : ${#numbers.sequence(data.start,data.end)}">
+                <li th:classappend="${num == data.page ? 'bg-indigo-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'}"
+                    th:with="linkUrl=@{/board/list(page=${num}, size=${requestDTO.size})}"
+                    class="px-3 py-2 border border-gray-700">
+                    <a th:href="${linkUrl + requestDTO.link}" class="block">[[${num}]]</a>
+                </li>
+            </th:block>
+            <li th:if="${data.next}" th:with="linkUrl=@{/board/list(page=${data.end + 1}, size=${requestDTO.size})}">
+                <a class="px-3 py-2 leading-tight text-gray-400 bg-gray-800 border border-gray-700 rounded-r-lg hover:bg-gray-700 hover:text-white"
+                   th:href="${linkUrl + requestDTO.link}">
+                    Next
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
 
-<script layout:fragment="script">
-    const arr = ['A','B','C']
-</script>
+<th:block layout:fragment="script">
+    <!-- JS 스크립트가 필요하다면 여기에 -->
+</th:block>
+</body>
+</html>

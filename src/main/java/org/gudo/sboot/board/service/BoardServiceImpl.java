@@ -1,14 +1,13 @@
 package org.gudo.sboot.board.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.gudo.sboot.board.dto.BoardListDTO;
 import org.gudo.sboot.board.dto.PageRequestDTO;
 import org.gudo.sboot.board.dto.PageResponseDTO;
 import org.gudo.sboot.board.repository.BoardRepository;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
